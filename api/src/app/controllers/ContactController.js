@@ -1,7 +1,11 @@
+const ContactRepository = require('../repositories/ContactRepository');
+
 class ContactController {
   // Listar todos os contatos
-  index(request, response) {
-    response.send({ message: 'Hellor, world!' });
+  async index(request, response) {
+    const contacts = await ContactRepository.findAll();
+
+    response.json(contacts);
   }
 
   // Obter um contato
