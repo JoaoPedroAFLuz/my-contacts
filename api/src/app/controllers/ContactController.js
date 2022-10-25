@@ -47,7 +47,37 @@ class ContactController {
   }
 
   // Editar um contato
-  update() {}
+  async update(request, response) {
+    const { id } = request.params;
+    const {
+      name, email, phone, category_id,
+    } = request.body;
+
+    if (!name) {
+      return response.status(400).json({ error: 'Name is required' });
+    }
+
+    const contact = await ContactRepository.findById(id);
+
+    if (!contact) {
+      return response.status(404).json({ error: 'Contact not found.' });
+    }
+
+    const emailInUse = await ContactRepository.findByEmail(email);
+
+    if (emailInUse && contact.email !== email) {
+      return response.status(400).json({ error: 'Email already in use.' });
+    }
+
+    const updatedContact = await ContactRepository.update(id, {
+      name,
+      email,
+      phone,
+      category_id,
+    });
+
+    return response.send(updatedContact);
+  }
 
   // Excluir um contato
   async delete(request, response) {
