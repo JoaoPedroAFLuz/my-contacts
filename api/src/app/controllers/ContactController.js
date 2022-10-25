@@ -5,11 +5,20 @@ class ContactController {
   async index(request, response) {
     const contacts = await ContactRepository.findAll();
 
-    response.json(contacts);
+    return response.json(contacts);
   }
 
   // Obter um contato
-  show() {}
+  async show(request, response) {
+    const { id } = request.params;
+    const contact = await ContactRepository.findById(id);
+
+    if (!contact) {
+      return response.status(404).json({ error: 'Contact not found' });
+    }
+
+    return response.json(contact);
+  }
 
   // Criar novo contato
   store() {}
