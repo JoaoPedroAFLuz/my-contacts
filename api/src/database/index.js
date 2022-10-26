@@ -11,8 +11,6 @@ const client = new Client({
 client.connect();
 
 exports.query = async (query, values) => {
-  console.log('Query:', query);
-  console.log('Values:', values);
   const { rows } = await client.query(query, values);
   return rows;
 };

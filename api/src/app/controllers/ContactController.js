@@ -44,7 +44,7 @@ class ContactController {
       category_id,
     });
 
-    return response.send(newContact);
+    return response.status(201).send(newContact);
   }
 
   // Editar um contato
