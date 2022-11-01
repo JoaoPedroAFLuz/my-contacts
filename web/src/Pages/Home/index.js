@@ -10,10 +10,13 @@ import {
 import arrow from '../../Assets/Images/icons/arrow.svg';
 import edit from '../../Assets/Images/icons/edit.svg';
 import trash from '../../Assets/Images/icons/trash.svg';
+import { Modal } from '../../Components/Modal';
 
 export function Home() {
   return (
     <Container>
+      <Modal />
+
       <InputSearchContainer>
         <input type="text" placeholder="Pesquise pelo nome..." />
       </InputSearchContainer>
@@ -43,6 +46,44 @@ export function Home() {
             <Link to="/edit/1">
               <img src={edit} alt="Edit" />
             </Link>
+            <button type="button">
+              <img src={trash} alt="Delete" />
+            </button>
+          </div>
+        </Card>
+
+        <Card>
+          <div className="info">
+            <div className="contact-name">
+              <strong>João</strong>
+              <small>Eu</small>
+            </div>
+            <span>joao.pedro.luz@hotmail.com</span>
+            <span>(77) 9 7777-7777</span>
+          </div>
+          <div className="actions">
+            <a href="/">
+              <img src={edit} alt="Edit" />
+            </a>
+            <button type="button">
+              <img src={trash} alt="Delete" />
+            </button>
+          </div>
+        </Card>
+
+        <Card>
+          <div className="info">
+            <div className="contact-name">
+              <strong>João</strong>
+              <small>Eu</small>
+            </div>
+            <span>joao.pedro.luz@hotmail.com</span>
+            <span>(77) 9 7777-7777</span>
+          </div>
+          <div className="actions">
+            <a href="/">
+              <img src={edit} alt="Edit" />
+            </a>
             <button type="button">
               <img src={trash} alt="Delete" />
             </button>
