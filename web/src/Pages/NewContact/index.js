@@ -1,3 +1,7 @@
+import { PageHeader } from '../../Components/PageHeader/inex';
+
 export function NewContact() {
-  return 'NewContact Page';
+  return (
+    <PageHeader title="Novo Contato" />
+  );
 }

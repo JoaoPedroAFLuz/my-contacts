@@ -1,3 +1,7 @@
+import { PageHeader } from '../../Components/PageHeader/inex';
+
 export function EditContact() {
-  return 'EditContact Page';
+  return (
+    <PageHeader title="Editar Contato" />
+  );
 }
