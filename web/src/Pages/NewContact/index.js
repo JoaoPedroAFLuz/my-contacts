@@ -1,20 +1,13 @@
-import { PageHeader } from '../../Components/PageHeader/inex';
+import { PageHeader } from '../../Components/PageHeader';
 
-import { Input } from '../../Components/Input';
-import { Select } from '../../Components/Select';
-import { Button } from '../../Components/Button';
+import { ContactForm } from '../../Components/ContactForm';
 
 export function NewContact() {
   return (
     <>
       <PageHeader title="Novo Contato" />
-      <Input placeholder="Nome" />
-      <Select>
-        <option>Instagram</option>
-        <option>Trabalho</option>
-        <option>Faculdade</option>
-      </Select>
-      <Button>Salvar alterações</Button>
+
+      <ContactForm buttonLabel="Cadastrar" />
     </>
   );
 }
