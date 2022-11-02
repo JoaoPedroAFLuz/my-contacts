@@ -9,29 +9,22 @@ import { Select } from '../Select';
 import { isEmailValid } from '../../Utils/IsEmailValid';
 
 import { ButtonContainer, Form } from './styles';
+import { useErrors } from '../../Hooks/useErrors';
 
 export function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [category, setCategory] = useState('');
-  const [errors, setErrors] = useState([]);
+  const { setError, removeError, getErrorMessageByFieldName } = useErrors();
 
   const handleNameChange = useCallback((event) => {
     setName(event.target.value);
 
     if (!event.target.value) {
-      setErrors((prevState) => [
-        ...prevState,
-        {
-          field: 'name',
-          message: 'Nome é obrigatório',
-        },
-      ]);
+      setError({ field: 'name', message: 'Nome é obrigatório' });
     } else {
-      setErrors((prevState) =>
-        prevState.filter((error) => error.field !== 'name')
-      );
+      removeError({ field: 'name' });
     }
   });
 
@@ -40,27 +33,11 @@ export function ContactForm({ buttonLabel }) {
     setEmail(emailInput);
 
     if (emailInput && !isEmailValid(emailInput)) {
-      const errorAlreadyExists = errors.some(
-        (error) => error.field === 'email'
-      );
-
-      if (errorAlreadyExists) {
-        return;
-      }
-
-      setErrors((prevState) => [
-        ...prevState,
-        { field: 'email', message: 'E-mail inválido' },
-      ]);
+      setError({ field: 'email', message: 'E-mail inválido' });
     } else {
-      setErrors((prevState) =>
-        prevState.filter((error) => error.field !== 'email')
-      );
+      removeError({ field: 'email' });
     }
   });
-
-  const getErrorMessageByFieldName = (fieldName) =>
-    errors.find((error) => error.field === fieldName)?.message;
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
@@ -71,8 +48,6 @@ export function ContactForm({ buttonLabel }) {
       category,
     });
   });
-
-  console.log(getErrorMessageByFieldName('name'));
 
   return (
     <Form onSubmit={handleSubmit}>
