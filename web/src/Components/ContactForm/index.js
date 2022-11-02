@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
@@ -10,19 +10,22 @@ import { ButtonContainer, Form } from './styles';
 
 export function ContactForm({ buttonLabel }) {
   const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [category, setCategory] = useState('');
 
-  const emailInput = useRef(null);
-
-  function handleClick() {
-    console.log(emailInput.current.value);
-  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log({
+      nome,
+      email,
+      phone,
+      category,
+    });
+  };
 
   return (
-    <Form>
-      <button type="button" onClick={() => handleClick()}>
-        Loga emailInput
-      </button>
-
+    <Form onSubmit={handleSubmit}>
       <FormGroup>
         <Input
           value={nome}
@@ -33,18 +36,30 @@ export function ContactForm({ buttonLabel }) {
       </FormGroup>
 
       <FormGroup>
-        <Input placeholder="E-mail" ref={emailInput} />
+        <Input
+          value={email}
+          placeholder="E-mail"
+          onChange={(event) => setEmail(event.target.value)}
+        />
       </FormGroup>
 
       <FormGroup>
-        <Input placeholder="Telefone" />
+        <Input
+          value={phone}
+          placeholder="Telefone"
+          onChange={(event) => setPhone(event.target.value)}
+        />
       </FormGroup>
 
       <FormGroup>
-        <Select>
-          <option>Faculdade</option>
-          <option>Trabalho</option>
-          <option>Instagram</option>
+        <Select
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+        >
+          <option value="">Categoria</option>
+          <option value="Faculdade">Faculdade</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Instagram">Instagram</option>
         </Select>
       </FormGroup>
 
