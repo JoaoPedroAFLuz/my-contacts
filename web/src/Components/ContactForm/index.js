@@ -10,6 +10,7 @@ import { isEmailValid } from '../../Utils/IsEmailValid';
 
 import { ButtonContainer, Form } from './styles';
 import { useErrors } from '../../Hooks/useErrors';
+import { formatPhone } from '../../Utils/formatPhone';
 
 export function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
@@ -40,12 +41,16 @@ export function ContactForm({ buttonLabel }) {
     }
   });
 
+  const handlePhoneChange = useCallback((event) =>
+    setPhone(formatPhone(event.target.value))
+  );
+
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
     console.log({
       nome: name,
       email,
-      phone,
+      phone: phone.replace(/\D/g, ''),
       category,
     });
   });
@@ -79,7 +84,8 @@ export function ContactForm({ buttonLabel }) {
           placeholder="Telefone"
           name="phone"
           type="tel"
-          onChange={(event) => setPhone(event.target.value)}
+          maxLength="16"
+          onChange={handlePhoneChange}
         />
       </FormGroup>
 
