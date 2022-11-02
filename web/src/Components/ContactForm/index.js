@@ -19,9 +19,10 @@ export function ContactForm({ buttonLabel }) {
   const { setError, removeError, getErrorMessageByFieldName } = useErrors();
 
   const handleNameChange = useCallback((event) => {
-    setName(event.target.value);
+    const nameInputValue = event.target.value;
+    setName(nameInputValue);
 
-    if (!event.target.value) {
+    if (!nameInputValue) {
       setError({ field: 'name', message: 'Nome é obrigatório' });
     } else {
       removeError({ field: 'name' });
@@ -29,10 +30,10 @@ export function ContactForm({ buttonLabel }) {
   });
 
   const handleEmailChange = useCallback((event) => {
-    const emailInput = event.target.value;
-    setEmail(emailInput);
+    const emailInputValue = event.target.value;
+    setEmail(emailInputValue);
 
-    if (emailInput && !isEmailValid(emailInput)) {
+    if (emailInputValue && !isEmailValid(emailInputValue)) {
       setError({ field: 'email', message: 'E-mail inválido' });
     } else {
       removeError({ field: 'email' });
@@ -50,7 +51,7 @@ export function ContactForm({ buttonLabel }) {
   });
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} noValidate>
       <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
           value={name}
@@ -66,6 +67,7 @@ export function ContactForm({ buttonLabel }) {
           value={email}
           placeholder="E-mail"
           name="e-mail"
+          type="email"
           onChange={handleEmailChange}
           error={getErrorMessageByFieldName('email')}
         />
@@ -76,6 +78,7 @@ export function ContactForm({ buttonLabel }) {
           value={phone}
           placeholder="Telefone"
           name="phone"
+          type="tel"
           onChange={(event) => setPhone(event.target.value)}
         />
       </FormGroup>

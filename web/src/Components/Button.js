@@ -11,6 +11,7 @@ export const Button = styled.button`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
   border-radius: 4px;
   transition: background 0.2s ease-in;
+  appearance: none;
 
   &:hover {
     background: ${({ theme }) => theme.colors.primary.light};
@@ -25,8 +26,9 @@ export const Button = styled.button`
     cursor: default;
   }
 
-  ${({ theme, danger }) => danger
-    && css`
+  ${({ theme, danger }) =>
+    danger &&
+    css`
       background: ${theme.colors.danger.main};
 
       &:hover {
