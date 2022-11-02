@@ -6,6 +6,8 @@ import { FormGroup } from '../FormGroup';
 import { Input } from '../Input';
 import { Select } from '../Select';
 
+import { isEmailValid } from '../../Utils/IsEmailValid';
+
 import { ButtonContainer, Form } from './styles';
 
 export function ContactForm({ buttonLabel }) {
@@ -15,7 +17,7 @@ export function ContactForm({ buttonLabel }) {
   const [category, setCategory] = useState('');
   const [errors, setErrors] = useState([]);
 
-  const handleName = useCallback((event) => {
+  const handleNameChange = useCallback((event) => {
     setName(event.target.value);
 
     if (!event.target.value) {
@@ -31,7 +33,27 @@ export function ContactForm({ buttonLabel }) {
     }
   });
 
-  console.log(errors);
+  const handleEmailChange = useCallback((event) => {
+    const emailInput = event.target.value;
+    setEmail(emailInput);
+
+    if (emailInput && !isEmailValid(emailInput)) {
+      const errorAlreadyExists = errors.some(
+        (error) => error.field === 'email',
+      );
+
+      if (errorAlreadyExists) {
+        return;
+      }
+
+      setErrors((prevState) => [
+        ...prevState,
+        { field: 'email', message: 'E-mail inválido' },
+      ]);
+    } else {
+      setErrors((prevState) => prevState.filter((error) => error.field !== 'email'));
+    }
+  });
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
@@ -43,6 +65,8 @@ export function ContactForm({ buttonLabel }) {
     });
   });
 
+  console.log(errors);
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormGroup>
@@ -50,7 +74,7 @@ export function ContactForm({ buttonLabel }) {
           value={name}
           placeholder="Nome"
           name="name"
-          onChange={handleName}
+          onChange={handleNameChange}
         />
       </FormGroup>
 
@@ -59,7 +83,7 @@ export function ContactForm({ buttonLabel }) {
           value={email}
           placeholder="E-mail"
           name="e-mail"
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={handleEmailChange}
         />
       </FormGroup>
 
