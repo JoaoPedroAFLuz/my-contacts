@@ -20,11 +20,18 @@ export function useErrors() {
   }
 
   function removeError({ field }) {
-    setErrors((prevState) => prevState.filter((error) => error.field !== field));
+    setErrors((prevState) =>
+      prevState.filter((error) => error.field !== field)
+    );
   }
 
   const getErrorMessageByFieldName = (fieldName) =>
     errors.find((error) => error.field === fieldName)?.message;
 
-  return { setError, removeError, getErrorMessageByFieldName };
+  return {
+    errors,
+    setError,
+    removeError,
+    getErrorMessageByFieldName,
+  };
 }
