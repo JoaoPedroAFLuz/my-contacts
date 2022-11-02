@@ -29,7 +29,9 @@ export function ContactForm({ buttonLabel }) {
         },
       ]);
     } else {
-      setErrors((prevState) => prevState.filter((error) => error.field !== 'name'));
+      setErrors((prevState) =>
+        prevState.filter((error) => error.field !== 'name')
+      );
     }
   });
 
@@ -39,7 +41,7 @@ export function ContactForm({ buttonLabel }) {
 
     if (emailInput && !isEmailValid(emailInput)) {
       const errorAlreadyExists = errors.some(
-        (error) => error.field === 'email',
+        (error) => error.field === 'email'
       );
 
       if (errorAlreadyExists) {
@@ -51,9 +53,14 @@ export function ContactForm({ buttonLabel }) {
         { field: 'email', message: 'E-mail inválido' },
       ]);
     } else {
-      setErrors((prevState) => prevState.filter((error) => error.field !== 'email'));
+      setErrors((prevState) =>
+        prevState.filter((error) => error.field !== 'email')
+      );
     }
   });
+
+  const getErrorMessageByFieldName = (fieldName) =>
+    errors.find((error) => error.field === fieldName)?.message;
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
@@ -65,25 +72,27 @@ export function ContactForm({ buttonLabel }) {
     });
   });
 
-  console.log(errors);
+  console.log(getErrorMessageByFieldName('name'));
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
           value={name}
           placeholder="Nome"
           name="name"
           onChange={handleNameChange}
+          error={getErrorMessageByFieldName('name')}
         />
       </FormGroup>
 
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
           value={email}
           placeholder="E-mail"
           name="e-mail"
           onChange={handleEmailChange}
+          error={getErrorMessageByFieldName('email')}
         />
       </FormGroup>
 
