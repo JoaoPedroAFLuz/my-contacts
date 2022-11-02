@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
@@ -9,29 +9,48 @@ import { Select } from '../Select';
 import { ButtonContainer, Form } from './styles';
 
 export function ContactForm({ buttonLabel }) {
-  const [nome, setNome] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [category, setCategory] = useState('');
+  const [errors, setErrors] = useState([]);
 
-  const handleSubmit = (event) => {
+  const handleName = useCallback((event) => {
+    setName(event.target.value);
+
+    if (!event.target.value) {
+      setErrors((prevState) => [
+        ...prevState,
+        {
+          field: 'name',
+          message: 'Nome é obrigatório',
+        },
+      ]);
+    } else {
+      setErrors((prevState) => prevState.filter((error) => error.field !== 'name'));
+    }
+  });
+
+  console.log(errors);
+
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
     console.log({
-      nome,
+      nome: name,
       email,
       phone,
       category,
     });
-  };
+  });
 
   return (
     <Form onSubmit={handleSubmit}>
       <FormGroup>
         <Input
-          value={nome}
+          value={name}
           placeholder="Nome"
           name="name"
-          onChange={(event) => setNome(event.target.value)}
+          onChange={handleName}
         />
       </FormGroup>
 
@@ -39,6 +58,7 @@ export function ContactForm({ buttonLabel }) {
         <Input
           value={email}
           placeholder="E-mail"
+          name="e-mail"
           onChange={(event) => setEmail(event.target.value)}
         />
       </FormGroup>
@@ -47,6 +67,7 @@ export function ContactForm({ buttonLabel }) {
         <Input
           value={phone}
           placeholder="Telefone"
+          name="phone"
           onChange={(event) => setPhone(event.target.value)}
         />
       </FormGroup>
