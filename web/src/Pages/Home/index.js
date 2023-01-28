@@ -6,7 +6,7 @@ import {
   Container,
   Header,
   InputSearchContainer,
-  ListContainer,
+  ListHeader,
 } from './style';
 
 import arrow from '../../Assets/Images/icons/arrow.svg';
@@ -15,15 +15,27 @@ import trash from '../../Assets/Images/icons/trash.svg';
 
 export function Home() {
   const [contacts, setContacts] = useState([]);
+  const [orderBy, setOrderBy] = useState('asc');
+
+  async function getContacts() {
+    try {
+      const response = await fetch(
+        `http://192.168.15.55:3001/contacts?orderBy=${orderBy}`
+      );
+      const json = await response.json();
+      setContacts(json);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function handleToggleOrderBy() {
+    setOrderBy((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
+  }
 
   useEffect(() => {
-    fetch('http://localhost:3001/contacts')
-      .then(async (response) => {
-        const json = await response.json();
-        setContacts(json);
-      })
-      .catch((error) => console.error('Error:', error));
-  }, []);
+    getContacts();
+  }, [orderBy]);
 
   return (
     <Container>
@@ -38,14 +50,12 @@ export function Home() {
         <Link to="/new">Novo Contato</Link>
       </Header>
 
-      <ListContainer>
-        <header>
-          <button type="button">
-            <span>Nome</span>
-            <img src={arrow} alt="Arrow" />
-          </button>
-        </header>
-      </ListContainer>
+      <ListHeader orderBy={orderBy}>
+        <button type="button" onClick={handleToggleOrderBy}>
+          <span>Nome</span>
+          <img src={arrow} alt="Arrow" />
+        </button>
+      </ListHeader>
 
       {contacts.length > 0 ? (
         contacts.map((contact) => (
