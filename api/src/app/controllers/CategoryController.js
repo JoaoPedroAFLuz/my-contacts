@@ -31,7 +31,7 @@ class CategoryController {
     if (hasCategory) {
       return response
         .status(400)
-        .json({ error: `Alredy has a category with name: ${name}` });
+        .json({ error: `Already has a category with name: ${name}` });
     }
 
     const newCategory = await CategoryRepository.create({ name });
