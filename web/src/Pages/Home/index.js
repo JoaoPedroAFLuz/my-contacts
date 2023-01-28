@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   Card,
   Container,
@@ -12,13 +14,27 @@ import edit from '../../Assets/Images/icons/edit.svg';
 import trash from '../../Assets/Images/icons/trash.svg';
 
 export function Home() {
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3001/contacts')
+      .then(async (response) => {
+        const json = await response.json();
+        setContacts(json);
+      })
+      .catch((error) => console.error('Error:', error));
+  }, []);
+
   return (
     <Container>
       <InputSearchContainer>
         <input type="text" placeholder="Pesquise pelo nome..." />
       </InputSearchContainer>
       <Header>
-        <strong>3 contatos</strong>
+        <strong>
+          {contacts.length}
+          {contacts.length === 1 ? ' contato' : ' contatos'}
+        </strong>
         <Link to="/new">Novo Contato</Link>
       </Header>
 
@@ -29,26 +45,39 @@ export function Home() {
             <img src={arrow} alt="Arrow" />
           </button>
         </header>
-
-        <Card>
-          <div className="info">
-            <div className="contact-name">
-              <strong>João</strong>
-              <small>Eu</small>
-            </div>
-            <span>joao.pedro.luz@hotmail.com</span>
-            <span>(77) 9 7777-7777</span>
-          </div>
-          <div className="actions">
-            <Link to="/edit/1">
-              <img src={edit} alt="Edit" />
-            </Link>
-            <button type="button">
-              <img src={trash} alt="Delete" />
-            </button>
-          </div>
-        </Card>
       </ListContainer>
+
+      {contacts.length > 0 ? (
+        contacts.map((contact) => (
+          <Card key={contact.id}>
+            <div className="info">
+              <div className="contact-name">
+                <strong>{contact.name}</strong>
+
+                {contact.category_name && (
+                  <small>{contact.category_name}</small>
+                )}
+              </div>
+
+              <span>{contact.email}</span>
+
+              <span>{contact.phone}</span>
+            </div>
+
+            <div className="actions">
+              <Link to={`/edit/${contact.id}`}>
+                <img src={edit} alt="Edit" />
+              </Link>
+
+              <button type="button">
+                <img src={trash} alt="Delete" />
+              </button>
+            </div>
+          </Card>
+        ))
+      ) : (
+        <span style={{ alignSelf: 'center' }}>Nenhum contato encontrado</span>
+      )}
     </Container>
   );
 }
