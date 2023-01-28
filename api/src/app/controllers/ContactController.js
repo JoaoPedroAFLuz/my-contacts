@@ -23,9 +23,7 @@ class ContactController {
 
   // Criar novo contato
   async store(request, response) {
-    const {
-      name, email, phone, category_id,
-    } = request.body;
+    const { name, email, phone, category_id } = request.body;
 
     if (!name) {
       return response.status(400).json({ error: 'Name is required' });
@@ -50,9 +48,7 @@ class ContactController {
   // Editar um contato
   async update(request, response) {
     const { id } = request.params;
-    const {
-      name, email, phone, category_id,
-    } = request.body;
+    const { name, email, phone, category_id } = request.body;
 
     if (!name) {
       return response.status(400).json({ error: 'Name is required' });
