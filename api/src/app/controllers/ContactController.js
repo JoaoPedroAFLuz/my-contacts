@@ -1,3 +1,4 @@
+const validateUuidV4 = require('../../utils/validateUuidV4');
 const ContactRepository = require('../repositories/ContactRepository');
 
 class ContactController {
@@ -12,6 +13,13 @@ class ContactController {
   // Obter um contato
   async show(request, response) {
     const { id } = request.params;
+
+    const isAValidUuid = validateUuidV4(id);
+
+    if (!isAValidUuid) {
+      return response.status(400).json({ error: 'Id must be an uuid' });
+    }
+
     const contact = await ContactRepository.findById(id);
 
     if (!contact) {
@@ -50,6 +58,12 @@ class ContactController {
     const { id } = request.params;
     const { name, email, phone, category_id } = request.body;
 
+    const isAValidUuid = validateUuidV4(id);
+
+    if (!isAValidUuid) {
+      return response.status(400).json({ error: 'Id must be an uuid' });
+    }
+
     if (!name) {
       return response.status(400).json({ error: 'Name is required' });
     }
@@ -79,6 +93,12 @@ class ContactController {
   // Excluir um contato
   async delete(request, response) {
     const { id } = request.params;
+
+    const isAValidUuid = validateUuidV4(id);
+
+    if (!isAValidUuid) {
+      return response.status(400).json({ error: 'Id must be an uuid' });
+    }
 
     await ContactRepository.delete(id);
 
