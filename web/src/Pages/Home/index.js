@@ -1,7 +1,7 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { delay } from '../../Utils/delays';
+import ContactsService from '../../Services/contactsService';
 
 import { Loader } from '../../Components/Loader';
 
@@ -34,28 +34,22 @@ export function Home() {
   );
 
   useEffect(() => {
+    async function getContacts() {
+      try {
+        setIsLoading(true);
+
+        const contactsList = await ContactsService.listContacts(orderBy);
+
+        setContacts(contactsList);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     getContacts();
   }, [orderBy]);
-
-  async function getContacts() {
-    try {
-      setIsLoading(true);
-
-      await delay(500);
-
-      const response = await fetch(
-        `http://192.168.15.55:3001/contacts?orderBy=${orderBy}`
-      );
-
-      const json = await response.json();
-
-      setContacts(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   function handleToggleOrderBy() {
     setOrderBy((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));

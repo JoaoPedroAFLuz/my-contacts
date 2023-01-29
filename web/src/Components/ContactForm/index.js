@@ -1,16 +1,17 @@
+/* eslint-disable react/jsx-no-bind */
 import PropTypes from 'prop-types';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
+
+import { useErrors } from '../../Hooks/useErrors';
+import { formatPhone } from '../../Utils/formatPhone';
+import { isEmailValid } from '../../Utils/IsEmailValid';
 
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
 import { Input } from '../Input';
 import { Select } from '../Select';
 
-import { isEmailValid } from '../../Utils/IsEmailValid';
-
 import { ButtonContainer, Form } from './styles';
-import { useErrors } from '../../Hooks/useErrors';
-import { formatPhone } from '../../Utils/formatPhone';
 
 export function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
@@ -22,7 +23,7 @@ export function ContactForm({ buttonLabel }) {
 
   const isFormValid = name && errors.length === 0;
 
-  const handleNameChange = useCallback((event) => {
+  function handleNameChange(event) {
     const nameInputValue = event.target.value;
     setName(nameInputValue);
 
@@ -31,9 +32,9 @@ export function ContactForm({ buttonLabel }) {
     } else {
       removeError({ field: 'name' });
     }
-  });
+  }
 
-  const handleEmailChange = useCallback((event) => {
+  function handleEmailChange(event) {
     const emailInputValue = event.target.value;
     setEmail(emailInputValue);
 
@@ -42,13 +43,13 @@ export function ContactForm({ buttonLabel }) {
     } else {
       removeError({ field: 'email' });
     }
-  });
+  }
 
-  const handlePhoneChange = useCallback((event) =>
-    setPhone(formatPhone(event.target.value))
-  );
+  function handlePhoneChange(event) {
+    setPhone(formatPhone(event.target.value));
+  }
 
-  const handleSubmit = useCallback((event) => {
+  function handleSubmit(event) {
     event.preventDefault();
     console.log({
       nome: name,
@@ -56,7 +57,7 @@ export function ContactForm({ buttonLabel }) {
       phone: phone.replace(/\D/g, ''),
       category,
     });
-  });
+  }
 
   return (
     <Form onSubmit={handleSubmit} noValidate>
