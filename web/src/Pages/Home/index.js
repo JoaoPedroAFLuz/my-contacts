@@ -1,6 +1,10 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
+import { delay } from '../../Utils/delays';
+
+import { Loader } from '../../Components/Loader';
+
 import {
   Card,
   Container,
@@ -14,6 +18,7 @@ import edit from '../../Assets/Images/icons/edit.svg';
 import trash from '../../Assets/Images/icons/trash.svg';
 
 export function Home() {
+  const [isLoading, setIsLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [orderBy, setOrderBy] = useState('asc');
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,13 +39,21 @@ export function Home() {
 
   async function getContacts() {
     try {
+      setIsLoading(true);
+
+      await delay(500);
+
       const response = await fetch(
         `http://192.168.15.55:3001/contacts?orderBy=${orderBy}`
       );
+
       const json = await response.json();
+
       setContacts(json);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -54,6 +67,8 @@ export function Home() {
 
   return (
     <Container>
+      <Loader isLoading={isLoading} />
+
       <InputSearchContainer>
         <input
           type="text"
@@ -62,6 +77,7 @@ export function Home() {
           onChange={handleChangeSearchTerm}
         />
       </InputSearchContainer>
+
       <Header>
         <strong>
           {filteredContacts.length}
