@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import ContactsService from '../../Services/contactsService';
@@ -37,11 +37,7 @@ export function Home() {
     [contacts, searchTerm]
   );
 
-  useEffect(() => {
-    getContacts();
-  }, [orderBy]);
-
-  async function getContacts() {
+  const getContacts = useCallback(async () => {
     try {
       setIsLoading(true);
 
@@ -55,7 +51,11 @@ export function Home() {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [orderBy]);
+
+  useEffect(() => {
+    getContacts();
+  }, [getContacts]);
 
   function handleToggleOrderBy() {
     setOrderBy((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
