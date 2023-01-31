@@ -1,3 +1,4 @@
+import { APIError } from '../../Errors/apiError';
 import { delay } from '../../Utils/delay';
 
 export class HttpClient {
@@ -21,8 +22,6 @@ export class HttpClient {
       return body;
     }
 
-    throw new Error(
-      body?.error || `${response.status} - ${response.statusText}`
-    );
+    throw new APIError(response, body);
   }
 }
