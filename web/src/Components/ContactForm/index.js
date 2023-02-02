@@ -15,6 +15,7 @@ import { Select } from '../Select';
 import { ButtonContainer, Form } from './styles';
 
 export function ContactForm({ buttonLabel }) {
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -27,10 +28,15 @@ export function ContactForm({ buttonLabel }) {
   useEffect(() => {
     async function getCategories() {
       try {
+        setIsLoadingCategories(true);
+
         const categoriesList = await categoriesService.listCategories();
 
         setCategories(categoriesList);
-      } catch {}
+      } catch {
+      } finally {
+        setIsLoadingCategories(false);
+      }
     }
 
     getCategories();
@@ -110,6 +116,7 @@ export function ContactForm({ buttonLabel }) {
 
       <FormGroup>
         <Select
+          disabled={isLoadingCategories}
           value={categoryId}
           onChange={(event) => setCategoryId(event.target.value)}
         >
