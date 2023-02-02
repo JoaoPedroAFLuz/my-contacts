@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ContactsService from '../../Services/contactsService';
 
 import { Loader } from '../../Components/Loader';
+import { Button } from '../../Components/Button';
 
 import {
   Card,
@@ -14,14 +15,15 @@ import {
   Header,
   InputSearchContainer,
   ListHeader,
+  SearchNotFoundContainer,
 } from './style';
-import { Button } from '../../Components/Button';
 
 import arrow from '../../Assets/Images/icons/arrow.svg';
 import edit from '../../Assets/Images/icons/edit.svg';
-import trash from '../../Assets/Images/icons/trash.svg';
-import sad from '../../Assets/Images/icons/sad.svg';
 import emptyBox from '../../Assets/Images/icons/empty-box.svg';
+import magnifierQuestion from '../../Assets/Images/icons/magnifier-question.svg';
+import sad from '../../Assets/Images/icons/sad.svg';
+import trash from '../../Assets/Images/icons/trash.svg';
 
 export function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -126,11 +128,23 @@ export function Home() {
               <img src={emptyBox} alt="Empty box" />
 
               <p>
-                Você ainda não tem nenhum contato cadastrado! Clique no botão
-                <strong> ”Novo contato”</strong> à cima para cadastrar o seu
-                primeiro!
+                Você ainda não tem nenhum contato cadastrado!
+                <br />
+                Clique no botão <strong> ”Novo contato”</strong> à cima
+                <br />
+                para cadastrar o seu primeiro!
               </p>
             </EmptyListContainer>
+          )}
+
+          {contacts.length > 0 && filteredContacts.length < 1 && (
+            <SearchNotFoundContainer>
+              <img src={magnifierQuestion} alt="Magnifier question" />
+              <span>
+                Nenhum resultado foi encontrado para
+                <strong> ”{searchTerm}”</strong>
+              </span>
+            </SearchNotFoundContainer>
           )}
 
           {filteredContacts.length > 0 && (

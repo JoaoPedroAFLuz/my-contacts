@@ -87,6 +87,18 @@ export const EmptyListContainer = styled.div`
   }
 `;
 
+export const SearchNotFoundContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  margin-top: 16px;
+  gap: 24px;
+
+  span {
+    color: ${({ theme }) => theme.colors.gray[200]};
+    word-break: break-word;
+  }
+`;
+
 export const ListHeader = styled.header`
   margin-top: 24px;
   margin-bottom: 8px;
