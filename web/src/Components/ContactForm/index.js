@@ -114,7 +114,7 @@ export function ContactForm({ buttonLabel }) {
         />
       </FormGroup>
 
-      <FormGroup>
+      <FormGroup isLoading={isLoadingCategories}>
         <Select
           disabled={isLoadingCategories}
           value={categoryId}
