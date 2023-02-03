@@ -9,7 +9,7 @@ class ContactRepository {
         FROM contacts
         LEFT JOIN categories ON categories.id = contacts.category_id
         ORDER BY contacts.name ${direction}
-      `,
+      `
     );
   }
 
@@ -21,7 +21,7 @@ class ContactRepository {
         LEFT JOIN categories ON categories.id = contacts.category_id
         WHERE contacts.id = $1
       `,
-      [id],
+      [id]
     );
 
     return row;
@@ -35,23 +35,19 @@ class ContactRepository {
     return row;
   }
 
-  async create({
-    name, email, phone, category_id,
-  }) {
+  async create({ name, email, phone, category_id }) {
     const [row] = await db.query(
       `
       INSERT INTO contacts(name, email, phone, category_id)
       VALUES ($1, $2, $3, $4)
       RETURNING *
     `,
-      [name, email, phone, category_id],
+      [name, email, phone, category_id]
     );
     return row;
   }
 
-  async update(id, {
-    name, email, phone, category_id,
-  }) {
+  async update(id, { name, email, phone, category_id }) {
     const [row] = await db.query(
       `
       UPDATE contacts
@@ -59,7 +55,7 @@ class ContactRepository {
       WHERE id = $5
       RETURNING *
     `,
-      [name, email, phone, category_id, id],
+      [name, email, phone, category_id, id]
     );
 
     return row;

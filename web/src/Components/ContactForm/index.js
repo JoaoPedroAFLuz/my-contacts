@@ -14,7 +14,7 @@ import { Select } from '../Select';
 
 import { ButtonContainer, Form } from './styles';
 
-export function ContactForm({ buttonLabel }) {
+export function ContactForm({ buttonLabel, onSubmit }) {
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -70,14 +70,17 @@ export function ContactForm({ buttonLabel }) {
     setPhone(formatPhone(event.target.value));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log({
-      nome: name,
+
+    const contact = {
+      name,
       email,
-      phone: phone.replace(/\D/g, ''),
-      category: categoryId,
-    });
+      phone,
+      categoryId,
+    };
+
+    onSubmit(contact);
   }
 
   return (
@@ -141,4 +144,5 @@ export function ContactForm({ buttonLabel }) {
 
 ContactForm.propTypes = {
   buttonLabel: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };

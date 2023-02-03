@@ -1,4 +1,4 @@
-import { HttpClient } from './utils/httpClient';
+import { HttpClient } from './Utils/httpClient';
 
 class CategoriesService {
   constructor() {
