@@ -6,36 +6,37 @@ export class HttpClient {
     this.baseUrl = baseUrl;
   }
 
-  async get(path) {
-    await delay(500);
-
-    const response = await fetch(`${this.baseUrl}${path}`);
-
-    let body = null;
-    const contentType = response.headers.get('content-type');
-
-    if (contentType.includes('application/json')) {
-      body = await response.json();
-    }
-
-    if (response.ok) {
-      return body;
-    }
-
-    throw new APIError(response, body);
+  async get(path, options) {
+    return this.makeRequest(path, { method: 'GET', headers: options?.headers });
   }
 
-  async post(path, body) {
+  async post(path, options) {
+    return this.makeRequest(path, {
+      method: 'POST',
+      body: options?.body,
+      headers: options?.headers,
+    });
+  }
+
+  async makeRequest(path, options) {
     await delay(500);
 
-    const headers = new Headers({
-      'Content-Type': 'application/json',
-    });
+    const headers = new Headers();
+
+    if (options.body) {
+      headers.append('Content-Type', 'application/json');
+    }
+
+    if (options.headers) {
+      Object.entries(options.headers).forEach(([key, value]) => {
+        headers.append(key, value);
+      });
+    }
 
     const response = await fetch(`${this.baseUrl}${path}`, {
-      method: 'POST',
+      method: options.method,
       headers,
-      body: JSON.stringify(body),
+      body: JSON.stringify(options.body),
     });
 
     let responseBody = null;
@@ -46,7 +47,7 @@ export class HttpClient {
     }
 
     if (response.ok) {
-      return body;
+      return responseBody;
     }
 
     throw new APIError(response, responseBody);
