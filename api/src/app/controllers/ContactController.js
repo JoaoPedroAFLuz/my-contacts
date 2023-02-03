@@ -1,4 +1,4 @@
-const validateUuidV4 = require('../../utils/validateUuidV4');
+const isValidUUID = require('../../utils/isValidUUID');
 const ContactRepository = require('../repositories/ContactRepository');
 
 class ContactController {
@@ -14,9 +14,7 @@ class ContactController {
   async show(request, response) {
     const { id } = request.params;
 
-    const isAValidUuid = validateUuidV4(id);
-
-    if (!isAValidUuid) {
+    if (!isValidUUID(id)) {
       return response.status(400).json({ error: 'Id must be an uuid' });
     }
 
@@ -33,21 +31,29 @@ class ContactController {
   async store(request, response) {
     const { name, email, phone, category_id } = request.body;
 
+    if (category_id && !isValidUUID(category_id)) {
+      return response
+        .status(400)
+        .json({ error: 'Category id must be an uuid' });
+    }
+
     if (!name) {
       return response.status(400).json({ error: 'Name is required' });
     }
 
-    const emailInUse = await ContactRepository.findByEmail(email);
+    if (email) {
+      const emailInUse = await ContactRepository.findByEmail(email);
 
-    if (emailInUse) {
-      return response.status(400).json({ error: 'Email already in use.' });
+      if (emailInUse) {
+        return response.status(400).json({ error: 'Email already in use.' });
+      }
     }
 
     const newContact = await ContactRepository.create({
       name,
-      email,
+      email: email || null,
       phone,
-      category_id,
+      category_id: category_id || null,
     });
 
     return response.status(201).send(newContact);
@@ -58,10 +64,14 @@ class ContactController {
     const { id } = request.params;
     const { name, email, phone, category_id } = request.body;
 
-    const isAValidUuid = validateUuidV4(id);
-
-    if (!isAValidUuid) {
+    if (!isValidUUID(id)) {
       return response.status(400).json({ error: 'Id must be an uuid' });
+    }
+
+    if (category_id && !isValidUUID(category_id)) {
+      return response
+        .status(400)
+        .json({ error: 'Category id must be an uuid' });
     }
 
     if (!name) {
@@ -74,17 +84,19 @@ class ContactController {
       return response.status(404).json({ error: 'Contact not found.' });
     }
 
-    const emailInUse = await ContactRepository.findByEmail(email);
+    if (email) {
+      const emailInUse = await ContactRepository.findByEmail(email);
 
-    if (emailInUse && contact.email !== email) {
-      return response.status(400).json({ error: 'Email already in use.' });
+      if (emailInUse && contact.email !== email) {
+        return response.status(400).json({ error: 'Email already in use.' });
+      }
     }
 
     const updatedContact = await ContactRepository.update(id, {
       name,
-      email,
+      email: email || null,
       phone,
-      category_id,
+      category_id: category_id || null,
     });
 
     return response.send(updatedContact);
@@ -94,9 +106,7 @@ class ContactController {
   async delete(request, response) {
     const { id } = request.params;
 
-    const isAValidUuid = validateUuidV4(id);
-
-    if (!isAValidUuid) {
+    if (!isValidUUID(id)) {
       return response.status(400).json({ error: 'Id must be an uuid' });
     }
 
