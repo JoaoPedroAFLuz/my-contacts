@@ -18,12 +18,12 @@ import {
   SearchNotFoundContainer,
 } from './style';
 
-import arrow from '../../Assets/Images/icons/arrow.svg';
-import edit from '../../Assets/Images/icons/edit.svg';
-import emptyBox from '../../Assets/Images/icons/empty-box.svg';
-import magnifierQuestion from '../../Assets/Images/icons/magnifier-question.svg';
-import sad from '../../Assets/Images/icons/sad.svg';
-import trash from '../../Assets/Images/icons/trash.svg';
+import arrow from '../../Assets/Images/Icons/arrow.svg';
+import edit from '../../Assets/Images/Icons/edit.svg';
+import emptyBox from '../../Assets/Images/Icons/empty-box.svg';
+import magnifierQuestion from '../../Assets/Images/Icons/magnifier-question.svg';
+import sad from '../../Assets/Images/Icons/sad.svg';
+import trash from '../../Assets/Images/Icons/trash.svg';
 
 export function Home() {
   const [isLoading, setIsLoading] = useState(true);

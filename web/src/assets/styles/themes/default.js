@@ -8,7 +8,7 @@ export default {
       lighter: '#E0E3FF',
     },
     success: {
-      main: '##51CA73',
+      main: '#51CA73',
     },
     danger: {
       dark: '#F63131',
