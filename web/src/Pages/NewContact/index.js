@@ -1,5 +1,7 @@
 import contactsService from '../../Services/contactsService';
 
+import { toast } from '../../Utils/toast';
+
 import { ContactForm } from '../../Components/ContactForm';
 import { PageHeader } from '../../Components/PageHeader';
 
@@ -14,16 +16,10 @@ export function NewContact() {
       };
 
       await contactsService.createContact(contact);
-    } catch (error) {
-      console.error(error);
-      const event = new CustomEvent('addtoast', {
-        detail: {
-          type: 'error',
-          text: 'Ocorreu um erro ao cadastrar o contato!',
-        },
-      });
 
-      document.dispatchEvent(event);
+      toast({ type: 'success', text: 'Contato cadastrado com sucesso!' });
+    } catch (error) {
+      toast({ type: 'error', text: 'Ocorreu um erro ao cadastrar o contato!' });
     }
   }
 
