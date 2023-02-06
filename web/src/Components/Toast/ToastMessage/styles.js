@@ -21,6 +21,7 @@ export const Container = styled.div`
   padding: 16px 32px;
   color: #ffffff;
   gap: 8px;
+  cursor: pointer;
 
   ${({ type }) => containerVariants[type] || containerVariants.default};
 
