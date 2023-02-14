@@ -8,10 +8,6 @@ export const Container = styled.div`
     margin-top: 8px;
   }
 
-  & + & {
-    margin-top: 16px;
-  }
-
   .form-item {
     position: relative;
 
@@ -20,5 +16,9 @@ export const Container = styled.div`
       top: 18px;
       right: 16px;
     }
+  }
+
+  & + & {
+    margin-top: 16px;
   }
 `;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { toastEventManager } from '../../../Utils/toast';
 import { ToastMessage } from '../ToastMessage';
@@ -23,11 +23,11 @@ export function ToastContainer() {
     };
   }, []);
 
-  function handleRemoveMessage(id) {
+  const handleRemoveMessage = useCallback((id) => {
     setMessages((prevState) =>
       prevState.filter((message) => message.id !== id)
     );
-  }
+  }, []);
 
   return (
     <Container>
