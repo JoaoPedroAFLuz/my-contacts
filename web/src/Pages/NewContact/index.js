@@ -24,7 +24,7 @@ export function NewContact() {
       });
     } catch (error) {
       toast({
-        type: 'error',
+        type: 'danger',
         text: 'Ocorreu um erro ao cadastrar o contato!',
       });
     }

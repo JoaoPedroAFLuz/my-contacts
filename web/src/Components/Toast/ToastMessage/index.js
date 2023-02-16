@@ -25,7 +25,7 @@ export function ToastMessage({ message, onRemoveMessage }) {
       {message.type === 'success' && (
         <img src={checkCircleIcon} alt="Success icon" />
       )}
-      {message.type === 'error' && <img src={xCircleIcon} alt="Error icon" />}
+      {message.type === 'danger' && <img src={xCircleIcon} alt="Error icon" />}
       <strong>{message.text}</strong>
     </Container>
   );
@@ -34,7 +34,7 @@ export function ToastMessage({ message, onRemoveMessage }) {
 ToastMessage.propTypes = {
   message: PropTypes.shape({
     text: PropTypes.string.isRequired,
-    type: PropTypes.oneOf(['default', 'success', 'error']),
+    type: PropTypes.oneOf(['default', 'success', 'danger']),
     duration: PropTypes.number,
   }).isRequired,
   onRemoveMessage: PropTypes.func.isRequired,
