@@ -7,14 +7,17 @@ import { ContactForm } from '../../Components/ContactForm';
 import { Loader } from '../../Components/Loader';
 import { PageHeader } from '../../Components/PageHeader/index';
 import { toast } from '../../Utils/toast';
+import { useSafeAsyncAction } from '../../Hooks/useSafeAsyncAction';
 
 export function EditContact() {
   const [isLoading, setIsLoading] = useState(true);
   const [contactName, setContactName] = useState('');
+
   const contactFormRef = useRef(null);
 
   const { id } = useParams();
   const history = useHistory();
+  const safeAsyncAction = useSafeAsyncAction();
 
   async function handleSubmit(formData) {
     try {
@@ -47,22 +50,27 @@ export function EditContact() {
       try {
         const contact = await contactsService.getContactById(id);
 
-        setContactName(contact.name);
+        safeAsyncAction(() => {
+          setContactName(contact.name);
 
-        contactFormRef.current.setFieldsValues(contact);
+          contactFormRef.current.setFieldsValues(contact);
 
-        setIsLoading(false);
+          setIsLoading(false);
+        });
       } catch (error) {
-        history.push('/');
-        toast({
-          type: 'danger',
-          text: 'Contato não encontrado',
+        safeAsyncAction(() => {
+          history.push('/');
+
+          toast({
+            type: 'danger',
+            text: 'Contato não encontrado',
+          });
         });
       }
     }
 
     loadContact();
-  }, [id, history]);
+  }, [id, history, safeAsyncAction]);
 
   return (
     <>
