@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { forwardRef, useEffect, useState, useImperativeHandle } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 import categoriesService from '../../Services/categoriesService';
 
 import { useErrors } from '../../Hooks/useErrors';
+import { useSafeAsyncState } from '../../Hooks/useSafeAsyncState';
 import { formatPhone } from '../../Utils/formatPhone';
 import { isEmailValid } from '../../Utils/IsEmailValid';
 
@@ -11,17 +12,16 @@ import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
 import { Input } from '../Input';
 import { Select } from '../Select';
-
 import { ButtonContainer, Form } from './styles';
 
 export const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isLoadingCategories, setIsLoadingCategories] = useSafeAsyncState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useSafeAsyncState([]);
 
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors();
@@ -60,7 +60,7 @@ export const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
     }
 
     getCategories();
-  }, []);
+  }, [setCategories, setIsLoadingCategories]);
 
   const isFormValid = name && errors.length === 0;
 

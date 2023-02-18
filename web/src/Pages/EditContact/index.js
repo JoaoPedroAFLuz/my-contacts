@@ -53,7 +53,6 @@ export function EditContact() {
 
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
         history.push('/');
         toast({
           type: 'danger',
