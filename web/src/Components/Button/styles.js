@@ -1,11 +1,13 @@
 import styled, { css } from 'styled-components';
 
 export const Button = styled.button`
+  height: 52px;
+  padding: 0 16px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 52px;
-  padding: 0 16px;
+
   border: none;
   background: ${({ theme }) => theme.colors.primary.main};
   color: #ffffff;
@@ -25,8 +27,8 @@ export const Button = styled.button`
   }
 
   &[disabled] {
-    background: #ccc;
-    cursor: default;
+    background: #ccc !important;
+    cursor: not-allowed !important;
   }
 
   ${({ theme, danger }) =>

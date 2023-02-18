@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import ContactsService from '../../Services/contactsService';
 
+import { toast } from '../../Utils/toast';
+
 import { Button } from '../../Components/Button';
 import { Loader } from '../../Components/Loader';
 import { Modal } from '../../Components/Modal';
@@ -28,10 +30,13 @@ import trash from '../../Assets/Images/Icons/trash.svg';
 
 export function Home() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [orderBy, setOrderBy] = useState('asc');
   const [searchTerm, setSearchTerm] = useState('');
+  const [contactBeingDeleted, setContactBeingDeleted] = useState(null);
 
   const filteredContacts = useMemo(
     () =>
@@ -75,16 +80,55 @@ export function Home() {
     getContacts();
   }
 
+  function handleDeleteContact(contact) {
+    setContactBeingDeleted(contact);
+
+    setIsDeleteModalVisible(true);
+  }
+
+  async function handleConfirmDeleteContact() {
+    try {
+      setIsLoadingDelete(true);
+
+      await ContactsService.deleteContact(contactBeingDeleted.id);
+
+      setContacts((prevState) =>
+        prevState.filter((contact) => contact.id !== contactBeingDeleted.id)
+      );
+
+      setIsDeleteModalVisible(false);
+
+      toast({
+        type: 'success',
+        text: 'Contato deletado com sucesso!',
+      });
+    } catch {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao deletar o contato.',
+      });
+    } finally {
+      setIsLoadingDelete(false);
+    }
+  }
+
+  function handleCloseDeleteModal() {
+    setIsDeleteModalVisible(false);
+    setContactBeingDeleted(null);
+  }
+
   return (
     <Container>
       <Loader isLoading={isLoading} />
 
       <Modal
-        title='Deseja deletar o contato "João Pedro Luz"'
-        confirmLabel="Deletar"
         danger
-        onCancel={() => alert('Cancelou')}
-        onConfirm={() => alert('Confirmou')}
+        visible={isDeleteModalVisible}
+        isLoading={isLoadingDelete}
+        title={`Deseja deletar o contato ”${contactBeingDeleted?.name}”`}
+        confirmLabel="Deletar"
+        onCancel={handleCloseDeleteModal}
+        onConfirm={handleConfirmDeleteContact}
       >
         <p>Esta ação não poderá ser desfeita!</p>
       </Modal>
@@ -188,7 +232,10 @@ export function Home() {
                   <img src={edit} alt="Edit" />
                 </Link>
 
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() => handleDeleteContact(contact)}
+                >
                   <img src={trash} alt="Delete" />
                 </button>
               </div>
