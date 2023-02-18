@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 
 import ContactsService from '../../Services/contactsService';
 
-import { Loader } from '../../Components/Loader';
 import { Button } from '../../Components/Button';
+import { Loader } from '../../Components/Loader';
+import { Modal } from '../../Components/Modal';
 
 import {
   Card,
@@ -77,6 +78,16 @@ export function Home() {
   return (
     <Container>
       <Loader isLoading={isLoading} />
+
+      <Modal
+        title='Deseja deletar o contato "João Pedro Luz"'
+        confirmLabel="Deletar"
+        danger
+        onCancel={() => alert('Cancelou')}
+        onConfirm={() => alert('Confirmou')}
+      >
+        <p>Esta ação não poderá ser desfeita!</p>
+      </Modal>
 
       {contacts.length > 0 && (
         <InputSearchContainer>
