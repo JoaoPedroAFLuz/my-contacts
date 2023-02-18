@@ -98,10 +98,6 @@ export const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
     await onSubmit(contact);
 
     setIsSubmitting(false);
-    setName('');
-    setEmail('');
-    setPhone('');
-    setCategoryId('');
   }
 
   return (
