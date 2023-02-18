@@ -8,7 +8,7 @@ import { ContactForm } from '../../Components/ContactForm';
 import { PageHeader } from '../../Components/PageHeader';
 
 export function NewContact() {
-  const contactFormRef = useRef();
+  const contactFormRef = useRef(null);
 
   async function handleSubmit(formData) {
     try {
@@ -40,7 +40,11 @@ export function NewContact() {
     <>
       <PageHeader title="Novo Contato" />
 
-      <ContactForm buttonLabel="Cadastrar" onSubmit={handleSubmit} />
+      <ContactForm
+        buttonLabel="Cadastrar"
+        ref={contactFormRef}
+        onSubmit={handleSubmit}
+      />
     </>
   );
 }
