@@ -6,8 +6,8 @@ import contactsService from '../../Services/contactsService';
 import { ContactForm } from '../../Components/ContactForm';
 import { Loader } from '../../Components/Loader';
 import { PageHeader } from '../../Components/PageHeader/index';
-import { toast } from '../../Utils/toast';
 import { useSafeAsyncAction } from '../../Hooks/useSafeAsyncAction';
+import { toast } from '../../Utils/toast';
 
 export function EditContact() {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,22 +19,15 @@ export function EditContact() {
   const history = useHistory();
   const safeAsyncAction = useSafeAsyncAction();
 
-  async function handleSubmit(formData) {
+  async function handleSubmit(contact) {
     try {
-      const contact = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        category_id: formData.categoryId,
-      };
-
       const contactData = await contactsService.updateContact(id, contact);
 
       setContactName(contactData.name);
 
       toast({
         type: 'success',
-        text: 'Contato editar com sucesso!',
+        text: 'Contato editado com sucesso!',
         duration: 5000,
       });
     } catch (error) {

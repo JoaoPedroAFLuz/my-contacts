@@ -10,15 +10,8 @@ import { PageHeader } from '../../Components/PageHeader';
 export function NewContact() {
   const contactFormRef = useRef(null);
 
-  async function handleSubmit(formData) {
+  async function handleSubmit(contact) {
     try {
-      const contact = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        category_id: formData.categoryId,
-      };
-
       await contactsService.createContact(contact);
 
       contactFormRef.current.resetFields();
