@@ -6,6 +6,7 @@ import { useErrors } from '../../Hooks/useErrors';
 import { useSafeAsyncState } from '../../Hooks/useSafeAsyncState';
 import { formatPhone } from '../../Utils/formatPhone';
 import { isEmailValid } from '../../Utils/IsEmailValid';
+import { isPhoneValid } from '../../Utils/isPhoneValid';
 
 export function useContactForm({ ref, onSubmit }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,7 +81,19 @@ export function useContactForm({ ref, onSubmit }) {
   }
 
   function handlePhoneChange(event) {
-    setPhone(formatPhone(event.target.value));
+    const phoneInputValue = event.target.value;
+    const formattedPhone = formatPhone(phoneInputValue);
+
+    setPhone(formattedPhone);
+
+    if (formattedPhone && !isPhoneValid(formattedPhone)) {
+      setError({
+        field: 'phone',
+        message: 'Número inválido',
+      });
+    } else {
+      removeError({ field: 'phone' });
+    }
   }
 
   async function handleSubmit(event) {

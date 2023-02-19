@@ -52,15 +52,16 @@ export const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
         />
       </FormGroup>
 
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFieldName('phone')}>
         <Input
           value={phone}
           placeholder="Telefone"
           name="phone"
           type="tel"
-          maxLength="16"
+          maxLength="15"
           disabled={isSubmitting}
           onChange={handlePhoneChange}
+          error={getErrorMessageByFieldName('phone')}
         />
       </FormGroup>
 
