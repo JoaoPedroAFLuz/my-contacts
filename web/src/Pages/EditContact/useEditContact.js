@@ -5,9 +5,7 @@ import { useSafeAsyncAction } from '../../Hooks/useSafeAsyncAction';
 import contactsService from '../../Services/contactsService';
 import { toast } from '../../Utils/toast';
 
-import { Presentation } from './Presentation';
-
-export function Container() {
+export function useEditContact() {
   const [isLoading, setIsLoading] = useState(true);
   const [contactName, setContactName] = useState('');
 
@@ -63,12 +61,5 @@ export function Container() {
     loadContact();
   }, [id, history, safeAsyncAction]);
 
-  return (
-    <Presentation
-      contactName={contactName}
-      contactFormRef={contactFormRef}
-      isLoading={isLoading}
-      onSubmit={handleSubmit}
-    />
-  );
+  return { contactName, contactFormRef, isLoading, handleSubmit };
 }
