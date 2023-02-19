@@ -1,3 +1,4 @@
+import CategoryMapper from './Mappers/categoryMapper';
 import { HttpClient } from './Utils/httpClient';
 
 class CategoriesService {
@@ -5,8 +6,10 @@ class CategoriesService {
     this.httpClient = new HttpClient('http://192.168.15.55:3001');
   }
 
-  listCategories() {
-    return this.httpClient.get(`/categories`);
+  async listCategories() {
+    const categories = await this.httpClient.get(`/categories`);
+
+    return categories.map(CategoryMapper.toDomain);
   }
 }
 
