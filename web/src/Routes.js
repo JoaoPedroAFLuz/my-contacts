@@ -1,6 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 
-import { EditContact } from './Pages/EditContact';
+import { Container as EditContact } from './Pages/EditContact';
 import { Home } from './Pages/Home';
 import { NewContact } from './Pages/NewContact';
 
