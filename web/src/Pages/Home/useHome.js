@@ -35,6 +35,7 @@ export function useHome() {
     } catch (error) {
       console.error(error);
       setHasError(true);
+      setContacts([]);
     } finally {
       setIsLoading(false);
     }
