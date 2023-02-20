@@ -59,7 +59,6 @@ export function useHome() {
 
   function handleDeleteContact(contact) {
     setContactBeingDeleted(contact);
-
     setIsDeleteModalVisible(true);
   }
 
@@ -91,7 +90,6 @@ export function useHome() {
 
   function handleCloseDeleteModal() {
     setIsDeleteModalVisible(false);
-    setContactBeingDeleted(null);
   }
 
   return {
