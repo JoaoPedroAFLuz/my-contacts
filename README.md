@@ -40,7 +40,7 @@ yarn
 
 ## 🚀 Como rodar
 
-### Back-end
+### Back-end:
 - Crie um usuário no postgres com user = "posgres" e password = "12345";
 - Execute o script contido em [api/src/database/schemas.sql](https://github.com/JoaoPedroLuz57/my-contacts/blob/main/api/src/database/schema.sql) dentro do postgres;
 - Para rodar em modo desenvolvimento utilize utilize o seguinte comando no terminal (na pasta api):
