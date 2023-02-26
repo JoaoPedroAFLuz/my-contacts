@@ -1,24 +1,30 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 
 import checkCircleIcon from '../../../Assets/Images/Icons/check-circle.svg';
 import xCircleIcon from '../../../Assets/Images/Icons/x-circle.svg';
 
 import { Container } from './styles';
 
-export function ToastMessage({
+function ToastMessageComponent({
   message,
   animatedRef,
   isLeaving,
   onRemoveMessage,
 }) {
   useEffect(() => {
-    const timeOutId = setTimeout(onRemoveMessage, message.duration || 7000);
+    const timeOutId = setTimeout(() => {
+      onRemoveMessage(message.id);
+    }, message.duration || 7000);
 
     return () => {
       clearTimeout(timeOutId);
     };
-  }, [onRemoveMessage, message.duration]);
+  }, [onRemoveMessage, message]);
+
+  function handleRemoveToast() {
+    onRemoveMessage(message.id);
+  }
 
   return (
     <Container
@@ -26,7 +32,7 @@ export function ToastMessage({
       role="button"
       type={message.type}
       isLeaving={isLeaving}
-      onClick={onRemoveMessage}
+      onClick={handleRemoveToast}
       ref={animatedRef}
     >
       {message.type === 'success' && (
@@ -38,8 +44,9 @@ export function ToastMessage({
   );
 }
 
-ToastMessage.propTypes = {
+ToastMessageComponent.propTypes = {
   message: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
     type: PropTypes.oneOf(['default', 'success', 'danger']),
     duration: PropTypes.number,
@@ -48,3 +55,5 @@ ToastMessage.propTypes = {
   animatedRef: PropTypes.shape().isRequired,
   onRemoveMessage: PropTypes.func.isRequired,
 };
+
+export const ToastMessage = memo(ToastMessageComponent);

@@ -36,7 +36,7 @@ export function ToastContainer() {
           message={message}
           animatedRef={animatedRef}
           isLeaving={isLeaving}
-          onRemoveMessage={() => handleRemoveItems(message.id)}
+          onRemoveMessage={handleRemoveItems}
         />
       ))}
     </Container>
