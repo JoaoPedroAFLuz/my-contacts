@@ -1,3 +1,5 @@
 export async function delay(ms = 1000) {
-  await new Promise((resolve) => setTimeout(resolve, ms));
+  await new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
