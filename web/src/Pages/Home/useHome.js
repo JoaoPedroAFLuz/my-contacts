@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 
 import ContactsService from '../../Services/contactsService';
 
@@ -13,16 +13,9 @@ export function useHome() {
   const [orderBy, setOrderBy] = useState('asc');
   const [searchTerm, setSearchTerm] = useState('');
   const [contactBeingDeleted, setContactBeingDeleted] = useState(null);
+  const [filteredContacts, setFilteredContacts] = useState([]);
 
-  const filteredContacts = useMemo(
-    () =>
-      contacts.filter(
-        (contact) =>
-          contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          contact.email.toLowerCase().includes(searchTerm.toLowerCase())
-      ),
-    [contacts, searchTerm]
-  );
+  const [isPending, startTransition] = useTransition();
 
   const getContacts = useCallback(async () => {
     try {
@@ -32,6 +25,7 @@ export function useHome() {
 
       setHasError(false);
       setContacts(contactsList);
+      setFilteredContacts(contactsList);
     } catch (error) {
       console.error(error);
       setHasError(true);
@@ -45,22 +39,37 @@ export function useHome() {
     getContacts();
   }, [getContacts]);
 
-  function handleToggleOrderBy() {
+  const handleToggleOrderBy = useCallback(() => {
     setOrderBy((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
-  }
+  }, []);
 
-  function handleChangeSearchTerm(event) {
-    setSearchTerm(event.target.value);
-  }
+  const handleChangeSearchTerm = useCallback(
+    (event) => {
+      const { value } = event.target;
 
-  function handleTryAgain() {
+      setSearchTerm(value);
+
+      startTransition(() => {
+        setFilteredContacts(
+          contacts.filter(
+            (contact) =>
+              contact.name.toLowerCase().includes(value.toLowerCase()) ||
+              contact.email?.toLowerCase().includes(value.toLowerCase())
+          )
+        );
+      });
+    },
+    [contacts]
+  );
+
+  const handleTryAgain = useCallback(() => {
     getContacts();
-  }
+  }, [getContacts]);
 
-  function handleDeleteContact(contact) {
+  const handleDeleteContact = useCallback((contact) => {
     setContactBeingDeleted(contact);
     setIsDeleteModalVisible(true);
-  }
+  }, []);
 
   async function handleConfirmDeleteContact() {
     try {
@@ -102,6 +111,7 @@ export function useHome() {
     isLoading,
     isLoadingDelete,
     isDeleteModalVisible,
+    isPending,
     handleTryAgain,
     handleChangeSearchTerm,
     handleToggleOrderBy,

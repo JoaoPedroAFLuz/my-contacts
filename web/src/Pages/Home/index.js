@@ -1,6 +1,7 @@
 import { useHome } from './useHome';
 
 import { Loader } from '../../Components/Loader';
+import { ContactsList } from './components/ContactsList';
 import { EmptyList } from './components/EmptyList';
 import { ErrorStatus } from './components/ErrorStatus';
 import { Header } from './components/Header';
@@ -10,7 +11,6 @@ import { SearchNotFound } from './components/SearchNotFound';
 import { Container } from './style';
 
 import { Modal } from '../../Components/Modal';
-import { ContactsList } from './components/ContactsList';
 
 export function Home() {
   const {
