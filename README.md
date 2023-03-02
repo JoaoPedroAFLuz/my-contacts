@@ -4,7 +4,7 @@ Aplicação web para gerenciamento de contatos. Com esta aplicação o usuário 
 
 Neste projeto eu utilizei a menor quantidade possível de bibliotecas externas. O intuiito disso foi aprender como as principais bibliotecas funcionam e desenvolver
 suas funcionalidades na mão.
-No back-end, desenvolvido em Node.js, foi criada uma API utilizando Express e Postgres para armazenar informações sobre os contatos e as categorias, e por meio das 
+No back-end, desenvolvido em Node.js, foi criada uma API utilizando Express e Postgres para armazenar informações sobre os contatos e as categorias, e por meio das
 rotas disponibilizá-las para o front-end, desenvolvido em React.
 
 ## 📈 Versão 2.0.0
@@ -30,10 +30,10 @@ Para a próxima versão pretendo adicionar telas para gerenciar as categorias e 
 
 - Necessita a instalação do [Node](https://nodejs.org/en/) e do [Postgres](https://www.postgresql.org/);
 - Clone o projeto com o comando:
-```bash 
-git clone https://github.com/JoaoPedroLuz57/my-contacts.git 
-``` 
-- Acesse as pastas "api" e "web" e em cada uma execute o seguinte comando dentro do terminal: 
+```bash
+git clone https://github.com/JoaoPedroLuz57/my-contacts.git
+```
+- Acesse as pastas "api" e "web" e em cada uma execute o seguinte comando dentro do terminal:
 ```bash
 yarn
 ```
@@ -41,7 +41,7 @@ yarn
 ## 🚀 Como rodar
 
 ### Back-end:
-- Crie um usuário no postgres com user = "posgres" e password = "12345";
+- Crie um usuário no postgres com user = "postgres" e password = "12345";
 - Execute o script contido em [api/src/database/schemas.sql](https://github.com/JoaoPedroLuz57/my-contacts/blob/main/api/src/database/schema.sql) dentro do postgres;
 - Para rodar em modo desenvolvimento utilize utilize o seguinte comando no terminal (na pasta api):
 ```bash
@@ -49,7 +49,7 @@ yarn dev
 ```
 - Para gerenciar as categorias é necessário utilizar uma ferramenta como Insomnia para realizar chamadas http para as rotas de criação, edição e deleção.
 
-### Front-end: 
+### Front-end:
 - Para rodar em modo desenvolvimento utilize o seguinte comando no terminal (na pasta web):
 ```bash
 yarn dev
