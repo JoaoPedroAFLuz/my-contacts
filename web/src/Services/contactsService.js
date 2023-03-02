@@ -3,7 +3,7 @@ import { HttpClient } from './Utils/httpClient';
 
 class ContactsService {
   constructor() {
-    this.httpClient = new HttpClient('http://192.168.15.55:3001');
+    this.httpClient = new HttpClient('http://localhost:3001');
   }
 
   async listContacts(orderBy = 'asc') {
