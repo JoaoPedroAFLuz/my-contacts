@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState, useTransition } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useDeferredValue,
+} from 'react';
 
 import ContactsService from '../../Services/contactsService';
 
@@ -11,11 +17,24 @@ export function useHome() {
   const [hasError, setHasError] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [orderBy, setOrderBy] = useState('asc');
-  const [searchTerm, setSearchTerm] = useState('');
   const [contactBeingDeleted, setContactBeingDeleted] = useState(null);
-  const [filteredContacts, setFilteredContacts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const [isPending, startTransition] = useTransition();
+  const defferedsearchTerm = useDeferredValue(searchTerm);
+
+  const filteredContacts = useMemo(
+    () =>
+      contacts.filter(
+        (contact) =>
+          contact.name
+            .toLowerCase()
+            .includes(defferedsearchTerm.toLowerCase()) ||
+          contact.email
+            ?.toLowerCase()
+            .includes(defferedsearchTerm.toLowerCase())
+      ),
+    [contacts, defferedsearchTerm]
+  );
 
   const getContacts = useCallback(async () => {
     try {
@@ -25,7 +44,6 @@ export function useHome() {
 
       setHasError(false);
       setContacts(contactsList);
-      setFilteredContacts(contactsList);
     } catch (error) {
       console.error(error);
       setHasError(true);
@@ -35,32 +53,13 @@ export function useHome() {
     }
   }, [orderBy]);
 
-  useEffect(() => {
-    getContacts();
-  }, [getContacts]);
-
   const handleToggleOrderBy = useCallback(() => {
     setOrderBy((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
   }, []);
 
-  const handleChangeSearchTerm = useCallback(
-    (event) => {
-      const { value } = event.target;
-
-      setSearchTerm(value);
-
-      startTransition(() => {
-        setFilteredContacts(
-          contacts.filter(
-            (contact) =>
-              contact.name.toLowerCase().includes(value.toLowerCase()) ||
-              contact.email?.toLowerCase().includes(value.toLowerCase())
-          )
-        );
-      });
-    },
-    [contacts]
-  );
+  const handleChangeSearchTerm = useCallback((event) => {
+    setSearchTerm(event.target.value);
+  }, []);
 
   const handleTryAgain = useCallback(() => {
     getContacts();
@@ -101,6 +100,10 @@ export function useHome() {
     setIsDeleteModalVisible(false);
   }
 
+  useEffect(() => {
+    getContacts();
+  }, [getContacts]);
+
   return {
     contacts,
     filteredContacts,
@@ -111,7 +114,6 @@ export function useHome() {
     isLoading,
     isLoadingDelete,
     isDeleteModalVisible,
-    isPending,
     handleTryAgain,
     handleChangeSearchTerm,
     handleToggleOrderBy,
