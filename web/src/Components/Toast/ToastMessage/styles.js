@@ -48,13 +48,13 @@ export const Container = styled.div`
   box-shadow: 0px 20px 20px -16px rgba(0, 0, 0, 0.25);
   color: #ffffff;
   cursor: pointer;
-  animation: ${messageIn} 0.3s;
+  animation: ${messageIn} 0.3s forwards;
 
   ${({ type }) => containerVariants[type] || containerVariants.default};
   ${({ isLeaving }) =>
     isLeaving &&
     css`
-      animation: ${messageOut} 0.2s;
+      animation: ${messageOut} 0.2s forwards;
     `}
 
   & + & {
