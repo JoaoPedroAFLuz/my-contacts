@@ -35,9 +35,14 @@ export function useEditContact() {
   }
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function loadContact() {
       try {
-        const contact = await contactsService.getContactById(id);
+        const contact = await contactsService.getContactById(
+          id,
+          controller.signal
+        );
 
         safeAsyncAction(() => {
           setContactName(contact.name);
@@ -47,6 +52,10 @@ export function useEditContact() {
           setIsLoading(false);
         });
       } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return;
+        }
+
         safeAsyncAction(() => {
           history.push('/');
 
@@ -59,6 +68,10 @@ export function useEditContact() {
     }
 
     loadContact();
+
+    return () => {
+      controller.abort();
+    };
   }, [id, history, safeAsyncAction]);
 
   return { contactName, contactFormRef, isLoading, handleSubmit };

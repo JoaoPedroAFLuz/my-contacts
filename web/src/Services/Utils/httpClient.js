@@ -7,7 +7,11 @@ export class HttpClient {
   }
 
   async get(path, options) {
-    return this.makeRequest(path, { method: 'GET', headers: options?.headers });
+    return this.makeRequest(path, {
+      method: 'GET',
+      headers: options?.headers,
+      signal: options?.signal,
+    });
   }
 
   async post(path, options) {
@@ -52,6 +56,7 @@ export class HttpClient {
       method: options.method,
       headers,
       body: JSON.stringify(options.body),
+      signal: options.signal,
     });
 
     let responseBody = null;

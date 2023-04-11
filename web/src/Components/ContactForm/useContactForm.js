@@ -40,11 +40,15 @@ export function useContactForm({ ref, onSubmit }) {
   );
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function getCategories() {
       try {
         setIsLoadingCategories(true);
 
-        const categoriesList = await categoriesService.listCategories();
+        const categoriesList = await categoriesService.listCategories(
+          controller.signal
+        );
 
         setCategories(categoriesList);
       } catch {
@@ -54,6 +58,10 @@ export function useContactForm({ ref, onSubmit }) {
     }
 
     getCategories();
+
+    return () => {
+      controller.abort();
+    };
   }, [setCategories, setIsLoadingCategories]);
 
   const isFormValid = name && errors.length === 0;

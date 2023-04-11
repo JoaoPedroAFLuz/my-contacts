@@ -36,22 +36,31 @@ export function useHome() {
     [contacts, defferedsearchTerm]
   );
 
-  const getContacts = useCallback(async () => {
-    try {
-      setIsLoading(true);
+  const getContacts = useCallback(
+    async (signal) => {
+      try {
+        setIsLoading(true);
 
-      const contactsList = await ContactsService.listContacts(orderBy);
+        const contactsList = await ContactsService.listContacts(
+          orderBy,
+          signal
+        );
 
-      setHasError(false);
-      setContacts(contactsList);
-    } catch (error) {
-      console.error(error);
-      setHasError(true);
-      setContacts([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [orderBy]);
+        setHasError(false);
+        setContacts(contactsList);
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return;
+        }
+
+        setHasError(true);
+        setContacts([]);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [orderBy]
+  );
 
   const handleToggleOrderBy = useCallback(() => {
     setOrderBy((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
@@ -101,7 +110,13 @@ export function useHome() {
   }
 
   useEffect(() => {
-    getContacts();
+    const controller = new AbortController();
+
+    getContacts(controller.signal);
+
+    return () => {
+      controller.abort();
+    };
   }, [getContacts]);
 
   return {
