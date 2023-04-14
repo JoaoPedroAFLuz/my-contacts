@@ -6,10 +6,10 @@ import { Button as StyledButton } from './styles';
 
 export function Button({
   children,
-  disabled,
-  isLoading,
-  type,
-  danger,
+  disabled = false,
+  isLoading = false,
+  type = 'submit',
+  danger = false,
   onClick,
 }) {
   return (
@@ -32,12 +32,4 @@ Button.propTypes = {
   type: PropTypes.string,
   danger: PropTypes.bool,
   onClick: PropTypes.func,
-};
-
-Button.defaultProps = {
-  disabled: false,
-  isLoading: false,
-  type: 'submit',
-  danger: false,
-  onClick: undefined,
 };

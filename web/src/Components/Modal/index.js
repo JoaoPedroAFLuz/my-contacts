@@ -9,10 +9,10 @@ import { Container, Footer, Overlay } from './styles';
 export function Modal({
   visible,
   title,
-  cancelLabel,
-  confirmLabel,
-  danger,
-  isLoading,
+  cancelLabel = 'Cancelar',
+  confirmLabel = 'Confirmar',
+  danger = false,
+  isLoading = true,
   onCancel,
   onConfirm,
   children,
@@ -66,11 +66,4 @@ Modal.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
-};
-
-Modal.defaultProps = {
-  danger: false,
-  isLoading: true,
-  cancelLabel: 'Cancelar',
-  confirmLabel: 'Confirmar',
 };

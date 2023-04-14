@@ -66,16 +66,9 @@ ContactsListComponent.propTypes = {
       phone: PropTypes.string,
     })
   ).isRequired,
-  contactBeingDeleted: PropTypes.shape({
-    name: PropTypes.string,
-  }),
   orderBy: PropTypes.string.isRequired,
   onToggleOrderBy: PropTypes.func.isRequired,
   onDeleteContact: PropTypes.func.isRequired,
-};
-
-ContactsListComponent.defaultProps = {
-  contactBeingDeleted: null,
 };
 
 export const ContactsList = memo(ContactsListComponent);
