@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useSafeAsyncAction } from '../../Hooks/useSafeAsyncAction';
 import contactsService from '../../Services/contactsService';
@@ -12,7 +12,7 @@ export function useEditContact() {
   const contactFormRef = useRef(null);
 
   const { id } = useParams();
-  const history = useHistory();
+  // const history = useHistory();
   const safeAsyncAction = useSafeAsyncAction();
 
   async function handleSubmit(contact) {
@@ -57,7 +57,7 @@ export function useEditContact() {
         }
 
         safeAsyncAction(() => {
-          history.push('/');
+          // history.push('/');
 
           toast({
             type: 'danger',
@@ -72,7 +72,7 @@ export function useEditContact() {
     return () => {
       controller.abort();
     };
-  }, [id, history, safeAsyncAction]);
+  }, [id, safeAsyncAction]);
 
   return { contactName, contactFormRef, isLoading, handleSubmit };
 }
